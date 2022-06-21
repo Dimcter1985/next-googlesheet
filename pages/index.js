@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { google } from 'googleapis';
+import { useState } from 'react';
 
 export async function getServerSideProps({query}) {
   //Auth
@@ -27,8 +28,16 @@ export async function getServerSideProps({query}) {
   }
 }
 
+const Bomb = ({username}) => {
+  if(username === 'bomb') {
+    throw new Error('badabm')
+  }
+  return `Hi ${username}`
+}
+
 
 export default function IndexPage({ list }) {
+  const [username, setUserName] = useState('')
   console.log(list)
   return (
     <>
@@ -39,6 +48,8 @@ export default function IndexPage({ list }) {
       {list[0].map((el) => (
         <h2 key={el}>{el}</h2>
       ))}
+      <input type="text" value={username} onChange={(e) => setUserName(e.target.value)}/>
+      <Bomb username={username}/>
     </>
   );
 }
